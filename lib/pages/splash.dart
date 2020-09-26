@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class SplashPage extends StatelessWidget {
   void postFrameCallback(BuildContext context) {
     Future.delayed(Duration(seconds: 2), () {
-      Get.offAndToNamed('/homePage');
+      Get.offAndToNamed('/login');
     });
   }
 

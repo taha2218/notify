@@ -35,6 +35,7 @@ class HomePage extends StatelessWidget {
   Widget _buildAppbar(BuildContext context) {
 
     return AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
       elevation: 1,
       title: Text(
@@ -43,7 +44,7 @@ class HomePage extends StatelessWidget {
         style: GoogleFonts.ubuntu(textStyle: TextStyle(color: Colors.black.withOpacity(0.88),fontSize: 21,fontWeight: FontWeight.w600)),
       ),
       actions: [
-        IconButton(icon: Icon(Icons.exit_to_app), onPressed: (){})
+        IconButton(icon: Icon(Icons.exit_to_app), onPressed: (){Navigator.pop(context);})
       ],
     );
   }
@@ -87,7 +88,7 @@ class HomePage extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.info_outline,),
-          title: Text('About us',style: TextStyle(color: Colors.black, fontSize: 11),))
+          title: Text('About',style: TextStyle(color: Colors.black, fontSize: 11),))
       ],
     );
   }
