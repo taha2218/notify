@@ -15,14 +15,15 @@ class ProfilePage extends StatelessWidget {
         
   }
 
-
   Widget _buildAppBar(BuildContext context){
     return AppBar(
       elevation: 0,
       backgroundColor: Colors.indigo,
       automaticallyImplyLeading: true,
       leading: IconButton(
-        onPressed: (){},
+        onPressed: (){
+          Navigator.pop(context);
+        },
         icon: Icon(Icons.arrow_back_ios),
         color: Colors.white,
         
