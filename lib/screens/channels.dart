@@ -9,7 +9,7 @@ class ChannelsScreen extends StatelessWidget {
       height: double.infinity,
       width: double.infinity,
       color: Colors.grey.withOpacity(0.1),
-      child: Expanded(
+      child: Container(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

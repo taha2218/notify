@@ -44,7 +44,7 @@ class HomePage extends StatelessWidget {
         style: GoogleFonts.ubuntu(textStyle: TextStyle(color: Colors.black.withOpacity(0.88),fontSize: 18,fontWeight: FontWeight.w500)),
       ),
       actions: [
-        IconButton(icon: Icon(Icons.exit_to_app,size: 22,), onPressed: (){Navigator.pop(context);})
+        IconButton(icon: Icon(Icons.exit_to_app,size: 22, color: Colors.black.withOpacity(0.75),), onPressed: (){Navigator.pop(context);})
       ],
     );
   }
@@ -79,7 +79,19 @@ class HomePage extends StatelessWidget {
           title: Text("Channels",style: TextStyle(color: Colors.black, fontSize: 11),)
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person, size: 27),
+          icon: Container(
+            height: 27,
+            width: 27,
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.75),
+              shape: BoxShape.circle,
+              image: DecorationImage(image: AssetImage('assets/avatars/avatar.jpg')),
+              border: Border.all(
+                width: 0.5,
+                color: Colors.black.withOpacity(0.75),
+              ),
+            ),
+          ),
           title: Text("Profile",style: TextStyle(color: Colors.black, fontSize: 11),),
         ),
         BottomNavigationBarItem(
