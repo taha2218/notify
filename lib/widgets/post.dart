@@ -4,6 +4,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PostWidget extends StatelessWidget {
+
+  final String avatarUrl;
+  final String channelName;
+  final String authorName;
+  final String date;
+  final String imageUrl;
+  final String textBody;
+  final String fileCount;
+
+  PostWidget({this.avatarUrl,this.channelName,this.authorName,this.date,this.imageUrl,this.textBody,this.fileCount});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -44,7 +55,7 @@ class PostWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.grey,
               borderRadius: BorderRadius.circular(11),
-              image: DecorationImage(image: AssetImage("assets/avatars/dp2.jpg")),
+              image: DecorationImage(image: AssetImage(avatarUrl)),
               border: Border.all(
                 width: 0.1,
                 color: Colors.black.withOpacity(0.5),
@@ -62,18 +73,18 @@ class PostWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top:3.0),
                     child: Text(
-                      'Spider-Man: Spider-Verse',
+                      channelName,
                       style: GoogleFonts.rajdhani(textStyle: TextStyle(fontSize: 18,fontWeight: FontWeight.w600, height: 0.9)),
                     ),
                   ),
                   Text(
-                    'Peter Parker',
+                    authorName,
                     style: GoogleFonts.rajdhani(textStyle: TextStyle(fontSize: 12,fontWeight: FontWeight.w500, height: 0.9)),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top:4),
                     child: Text(
-                      '19 September, 07:30 AM',
+                      date,
                       style: GoogleFonts.rajdhani(textStyle: TextStyle(fontSize: 12,fontWeight: FontWeight.w400, height: 0.8)),
                     ),
                   )
@@ -102,7 +113,7 @@ class PostWidget extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(13),
-        child: Image.asset('assets/images/bg1.jpg', fit: BoxFit.fitWidth,),
+        child: Image.asset(imageUrl, fit: BoxFit.fitWidth,),
       ),
     );
   }
@@ -118,7 +129,7 @@ class PostWidget extends StatelessWidget {
             throw "Could not launch $link";
           }
         },
-        text:'''"Anyone can wear the mask. You can wear the mask. If you didn't know that before, I hope you do now" 💥🙌\nSpider-Man: Into the Spider-Verse hits the thatres this august! Don't miss out the movie.\nWatch the trailer at https://www.youtube.com/watch?v=g4Hbz2jLxvQ ❤🤩✨''',
+        text: textBody,
         style: GoogleFonts.roboto(textStyle: TextStyle(fontSize: 14,height: 1.25)),
         textAlign: TextAlign.justify,
         linkStyle: TextStyle(
@@ -132,7 +143,7 @@ class PostWidget extends StatelessWidget {
     return Container(
       width: double.infinity,
       child: Text(
-        "2 Files Attatched",
+        fileCount,
         style: GoogleFonts.rajdhani(textStyle: TextStyle(
           color: Colors.black54,
           fontSize: 12
