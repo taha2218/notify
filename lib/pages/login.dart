@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:notification/pages/otp.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -9,14 +10,29 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
+  bool isLoading = false ;
+  final _formKey = GlobalKey<FormState>();
   String phoneNumber, smsSent, verificationId;
   String status = "";
+
+  void _trySubmit(){
+    final isValid = _formKey.currentState.validate();
+    FocusScope.of(context).unfocus();
+    if (isValid){
+      print(phoneNumber);
+      verifyPhone();
+    }
+    else 
+      print("Invalid");  
+    
+  }
 
   Future<void> verifyPhone() async{
 
     final PhoneCodeSent smsCodeSent = (String verId,[int forceCodeResend]){
       this.verificationId = verId;
       print("==========> Sent <==========");
+      Get.offAndToNamed('/otp',arguments: verificationId);
     };
 
     final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
@@ -37,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
 
     var firebaseAuth = await FirebaseAuth.instance;
     firebaseAuth.verifyPhoneNumber(
-    phoneNumber: phoneNumber,
+    phoneNumber: '+'+phoneNumber,
     timeout: Duration(seconds: 6),
     verificationCompleted: verifiedSuccess,
     verificationFailed: verificationFailed,
@@ -65,7 +81,10 @@ class _LoginPageState extends State<LoginPage> {
       child: Column(
         children: <Widget>[
           _buildHeader(context),
-          _buildFooter(context),
+          Form(
+            key: _formKey,
+            child: _buildFooter(context)
+          ),
         ],
       ),
     );
@@ -149,7 +168,9 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             _buildNumberInput(context),
             SizedBox(height: 30,),
-            _buildSendOtpButton(context),
+            isLoading  
+            ?_buildLoadingIndicator(context)
+            :_buildSendOtpButton(context),
           ],
         ),
       ),
@@ -160,10 +181,18 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       width: MediaQuery.of(context).size.width/1.9,
       child: TextFormField(
+        key: ValueKey('number'),
         onFieldSubmitted: (String pNo){
           setState(() {
-            this.phoneNumber='+'+pNo;
+            this.phoneNumber='+'+ pNo;
           });
+        },
+        validator: (value){
+          if (value.length != 12 || value.isEmpty){
+            return "Enter a valid phone number !";
+          } else {
+            return null;
+          }
         },
         autofocus: false,
         showCursor: false,
@@ -177,6 +206,7 @@ class _LoginPageState extends State<LoginPage> {
         decoration: InputDecoration(
           hintText: "Mobile Number",
           hintStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
+          errorStyle: TextStyle(color: Colors.white.withOpacity(0.8),fontSize: 11,letterSpacing: 1),
           border: UnderlineInputBorder(
             borderSide: BorderSide(
               color: Colors.white,
@@ -198,10 +228,13 @@ class _LoginPageState extends State<LoginPage> {
       color: Colors.white,
       borderRadius: BorderRadius.circular(6),
       child: InkWell(
+        splashColor: Colors.grey.withOpacity(0.5),
         onTap: (){
           print(phoneNumber);
-          //verifyPhone();
-          Get.toNamed("/homePage");
+          setState(() {
+            isLoading = true;
+          });
+          _trySubmit();
         },
         child:Container(
           decoration: BoxDecoration(
@@ -223,4 +256,28 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );  
   }
+
+  Widget _buildLoadingIndicator(BuildContext context){
+    return Container(
+      margin: EdgeInsets.only(top: 2),
+      width: MediaQuery.of(context).size.width/1.9,
+      child: Column(
+        children: [
+          LinearProgressIndicator(
+            backgroundColor: Colors.indigo,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+          ),
+          SizedBox(height: 18,)
+          ,Text(
+            "Sending OTP",
+            style: TextStyle(
+              color: Colors.white.withOpacity(0.8),
+              fontWeight: FontWeight.w300            
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
 }

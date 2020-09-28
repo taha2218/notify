@@ -1,4 +1,4 @@
-# notify
+# Notifier
 
 A new Flutter project.
 

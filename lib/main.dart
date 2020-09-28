@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:notification/configuration/local.dart';
 import 'package:notification/pages/home.dart';
 import 'package:notification/pages/login.dart';
+import 'package:notification/pages/otp.dart';
 import 'package:notification/pages/profile.dart';
 import 'package:notification/pages/splash.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -53,7 +54,8 @@ class App extends StatelessWidget {
           // Example
           // GetPage(name: '/', page: () => Widget()),
           GetPage(name: '/', page: () => SplashPage()),
-          GetPage(name: '/login', page: () => LoginPage()),
+          GetPage(name: '/login', page: () => LoginPage(),transition: Transition.fadeIn),
+          GetPage(name: '/otp', page: () => OtpPage()),
           GetPage(name: '/profile', page: () => ProfilePage()),
           GetPage(name: '/homePage', page: () => HomePage()),
         ],

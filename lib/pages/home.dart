@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -44,7 +45,11 @@ class HomePage extends StatelessWidget {
         style: GoogleFonts.ubuntu(textStyle: TextStyle(color: Colors.black.withOpacity(0.88),fontSize: 18,fontWeight: FontWeight.w500)),
       ),
       actions: [
-        IconButton(icon: Icon(Icons.exit_to_app,size: 22, color: Colors.black.withOpacity(0.75),), onPressed: (){Navigator.pop(context);})
+        IconButton(icon: Icon(Icons.exit_to_app,size: 22, color: Colors.black.withOpacity(0.75),), onPressed: () async {
+          FirebaseAuth auth = FirebaseAuth.instance;
+          await auth.signOut();
+          Get.offAndToNamed('/login');
+        })
       ],
     );
   }
