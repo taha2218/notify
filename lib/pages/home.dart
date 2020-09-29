@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       backgroundColor: Colors.white,
-      elevation: 1,
+      elevation: 4,
       title: Text(
         "Notifier",
         textAlign: TextAlign.center,
@@ -64,6 +64,7 @@ class HomePage extends StatelessWidget {
     final _indexProvider = Provider.of<Index>(context);
     int _currentIndex = _indexProvider.indexOfScreen;
     return BottomNavigationBar(
+      // backgroundColor: Color.fromRGBO(240, 240, 240, 1),
       showSelectedLabels: false,
       showUnselectedLabels: false,
       type: BottomNavigationBarType.fixed,
