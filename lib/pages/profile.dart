@@ -1,11 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:notification/providers/user.dart';
 import 'package:notification/widgets/channel.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatelessWidget {
 
+  getData(BuildContext context) async {
+    final user = await FirebaseAuth.instance.currentUser;
+    String uid = user.uid;
+    final _userProvider = Provider.of<UserProvider>(context,listen: false);
+    Map<String,dynamic> _user = _userProvider.user;
+    DocumentReference documentReference = FirebaseFirestore.instance.collection('users').document(uid);
+    documentReference.set(_user);
+  }
+
   @override
   Widget build(BuildContext context) {
-    
     return SafeArea(
       child: Scaffold(
         appBar: _buildAppBar(context),
@@ -33,7 +45,10 @@ class ProfilePage extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: IconButton(
             icon: Icon(Icons.edit,color: Colors.white,), 
-            onPressed: (){},
+            onPressed: (){
+              print("GetData Called !");
+              getData(context);
+            },
           ),
         )
       ],
@@ -114,22 +129,26 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildUserInfo(BuildContext context){
+    
+    final _userProvider = Provider.of<UserProvider>(context);
+    Map<String,dynamic> _user = _userProvider.user;
+
     return Container(
       width: double.infinity,
       color: Colors.white,
-      padding: EdgeInsets.symmetric(vertical:10, horizontal: 0),
+      padding: EdgeInsets.only(top: 10,),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
-            'Black Widow',
+            '${_user["name"]}',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w600,
             ),
           ),
           Text(
-            '8806646846 - TECOB201',
+            '${_user["pNo"]} - ${_user["rNo"]}',
             style: TextStyle(
               color: Colors.black.withOpacity(0.5),
               fontSize: 18
@@ -141,12 +160,15 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildUserBio(BuildContext context){
+    final _userProvider = Provider.of<UserProvider>(context);
+    Map<String,dynamic> _user = _userProvider.user;
+
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+      padding: EdgeInsets.only(left: 20,right: 20 ,top: 10,bottom: 20),
       child: Center(
         child: Text(
-          "Lorem Ipsum dolor sit drax why is that but n amet. This is ceholder. Do not focus on the language. You free an would be an ann familiar with this if you have donfsefwfe the web rub developemnt previously. But it isfwef fewffw olalalal okay enough with rubbish llaal",
+          "${_user["bio"]}",
           textAlign: TextAlign.justify,
           style: TextStyle(
             fontSize: 14,

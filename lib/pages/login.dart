@@ -264,7 +264,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Column(
         children: [
           LinearProgressIndicator(
-            backgroundColor: Colors.indigo,
+            backgroundColor: Colors.white.withOpacity(0.1),
             valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
           ),
           SizedBox(height: 18,)

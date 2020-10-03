@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:notification/models/user.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 
@@ -137,8 +139,25 @@ class _OtpPageState extends State<OtpPage> {
           AuthCredential _credential = await PhoneAuthProvider.getCredential(verificationId: widget.verid, smsCode: smsCode);
           print("Credential ==> $_credential");
           auth.signInWithCredential(_credential)
-          .then((value){
+          .then((value) {
             print("Successfully verified");
+            final user = FirebaseAuth.instance.currentUser;
+            String uid = user.uid;
+            DocumentReference documentReference = FirebaseFirestore.instance.collection('users').document(uid);
+            documentReference.get()
+            .then((snapshot) => {
+              if (snapshot.exists) {
+                print("======== Exists ! ========")
+              } else {
+                documentReference.set({
+                  "uid":uid,
+                  "name":"Enter Your Name",
+                  "pNo":"Number",
+                  "rNo":"Roll Number",
+                  "bio":"Enter your bio"
+                })
+              }
+            });
             Get.offAndToNamed("/homePage");
           })
           .catchError((error){print("Error");});
