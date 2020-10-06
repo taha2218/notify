@@ -1,11 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
+import 'package:notification/controllers/index.dart';
 import 'package:get/get.dart';
 
 import 'package:notification/pages/profile.dart';
-import 'package:notification/providers/index.dart';
 import 'package:notification/screens/aboutUs.dart';
 import 'package:notification/screens/bookmark.dart';
 import 'package:notification/screens/channels.dart';
@@ -25,10 +24,13 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar:_buildAppbar(context),
-        body: _buildBody(context),
-        bottomNavigationBar: _buildBottomNavBar(context),
+      child: GetX<IndexState>(
+        init: IndexState(),
+        builder: (indexController) => Scaffold(
+          appBar:_buildAppbar(context),
+          body: _buildBody(context, indexController),
+          bottomNavigationBar: _buildBottomNavBar(context, indexController),
+        ),
       ),
     );  
   }
@@ -54,15 +56,13 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildBody(BuildContext context) {
-    final _indexProvider = Provider.of<Index>(context);
-    int _currentIndex = _indexProvider.indexOfScreen;
-    return _screens[_currentIndex]; 
+  Widget _buildBody(BuildContext context, dynamic indexState) {
+    //final IndexState indexState = Get.put(IndexState());
+    return _screens[indexState.indexCounter.value]; 
   }  
 
-  Widget _buildBottomNavBar(context) {
-    final _indexProvider = Provider.of<Index>(context);
-    int _currentIndex = _indexProvider.indexOfScreen;
+  Widget _buildBottomNavBar(context, dynamic indexState) {
+    int _currentindex = indexState.indexCounter.toInt();
     return BottomNavigationBar(
       // backgroundColor: Color.fromRGBO(240, 240, 240, 1),
       showSelectedLabels: false,
@@ -70,10 +70,10 @@ class HomePage extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       unselectedItemColor: Colors.black.withOpacity(0.75),
       selectedItemColor: Colors.indigo[800],
-      currentIndex: _currentIndex,
+      currentIndex: _currentindex,
       onTap: (value){
         if (value == 2) Get.toNamed('profile');
-        else _indexProvider.indexOfScreen = value;
+        else indexState.changeIndex(value);
       },
       items: [
         BottomNavigationBarItem(

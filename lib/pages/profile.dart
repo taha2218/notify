@@ -4,16 +4,34 @@ import 'package:flutter/material.dart';
 import 'package:notification/providers/user.dart';
 import 'package:notification/widgets/channel.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+
 
   getData(BuildContext context) async {
+    print("Function called automatically !");
     final user = await FirebaseAuth.instance.currentUser;
     String uid = user.uid;
     final _userProvider = Provider.of<UserProvider>(context,listen: false);
-    Map<String,dynamic> _user = _userProvider.user;
     DocumentReference documentReference = FirebaseFirestore.instance.collection('users').document(uid);
-    documentReference.set(_user);
+    documentReference.get()
+    .then((snapshot) => {
+      _userProvider.setUser(snapshot.data())
+    });
+
+  }
+
+  @override
+  void initState() {
+    getData(context);
+    super.initState();
   }
 
   @override
@@ -46,8 +64,6 @@ class ProfilePage extends StatelessWidget {
           child: IconButton(
             icon: Icon(Icons.edit,color: Colors.white,), 
             onPressed: (){
-              print("GetData Called !");
-              getData(context);
             },
           ),
         )
@@ -142,17 +158,11 @@ class ProfilePage extends StatelessWidget {
         children: <Widget>[
           Text(
             '${_user["name"]}',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            ),
+            style: GoogleFonts.ubuntu(fontSize:20),
           ),
           Text(
             '${_user["pNo"]} - ${_user["rNo"]}',
-            style: TextStyle(
-              color: Colors.black.withOpacity(0.5),
-              fontSize: 18
-            ),
+            style: GoogleFonts.ubuntu(fontSize: 16,color: Colors.black.withOpacity(0.5),fontWeight:FontWeight.w600,height:1.35),
           ),
         ],
       ),
@@ -170,10 +180,7 @@ class ProfilePage extends StatelessWidget {
         child: Text(
           "${_user["bio"]}",
           textAlign: TextAlign.justify,
-          style: TextStyle(
-            fontSize: 14,
-            height: 1.35
-          ),
+          style: GoogleFonts.ubuntu(fontSize: 15,height: 1.35,color: Colors.black.withOpacity(0.8))
         ),
       ),
     );
@@ -275,8 +282,5 @@ class ProfilePage extends StatelessWidget {
       ),
     );
   }
-
-
-
 }
 
