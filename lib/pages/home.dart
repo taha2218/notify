@@ -3,22 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:notification/controllers/index.dart';
 import 'package:get/get.dart';
-
-import 'package:notification/pages/profile.dart';
-import 'package:notification/screens/aboutUs.dart';
-import 'package:notification/screens/bookmark.dart';
-import 'package:notification/screens/channels.dart';
 import 'package:notification/screens/home.dart';
+
 
 
 class HomePage extends StatelessWidget {
 
   final List<Widget> _screens = [
     HomeScreen(),
-    ChannelsScreen(),
-    ProfilePage(),
-    BookMarkScreen(),
-    AboutUsScreen(),
+    HomeScreen(),
+    HomeScreen(),
+    HomeScreen(),
+    HomeScreen(),
   ];
 
   @override
@@ -72,8 +68,7 @@ class HomePage extends StatelessWidget {
       selectedItemColor: Colors.indigo[800],
       currentIndex: _currentindex,
       onTap: (value){
-        if (value == 2) Get.toNamed('profile');
-        else indexState.changeIndex(value);
+        indexState.changeIndex(value);
       },
       items: [
         BottomNavigationBarItem(

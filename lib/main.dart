@@ -9,9 +9,10 @@ import 'package:notification/pages/otp.dart';
 import 'package:notification/pages/profile.dart';
 import 'package:notification/pages/splash.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:notification/providers/index.dart';
 import 'package:notification/providers/user.dart';
 import 'package:provider/provider.dart';
+
+import 'providers/user.dart';
 
 void main() async {
   // Register controllers
@@ -32,7 +33,7 @@ class App extends StatelessWidget {
     );
 
     return ChangeNotifierProvider(
-      create: (_) => Index(),
+      create: (_) => UserProvider(),
       child: ChangeNotifierProvider(
         create: (_) => UserProvider(),
         child: GetMaterialApp(
